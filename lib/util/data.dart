@@ -7,6 +7,13 @@ class API {
         "https://7ccaa60l36.execute-api.us-east-1.amazonaws.com/teste/eventos",
         headers: {'Content-Type': 'application/json; charset=UTF-8'});
   }
+  
+  static Future getEventoEspecifico(String participanteId){
+    return http.get("https://7ccaa60l36.execute-api.us-east-1.amazonaws.com/"
+        "teste/eventos/participante/${participanteId}",
+        headers: {'Content-Type': 'application/json; charset=UTF-8'});
+  }
+  
 }
 
 class Evento {
@@ -53,6 +60,45 @@ class Evento {
       'descricao': descricao
     };
   }
+}
+
+
+class Participante {
+
+  String participanteId;
+  String nome;
+  String urlFoto;
+  String numero;
+  int idade;
+
+  Participante(String participanteId, String nome, String urlFoto,
+      String numero, int idade){
+    this.participanteId = participanteId;
+    this.nome = nome;
+    this.urlFoto = urlFoto;
+    this.numero = numero;
+    this.idade = idade;
+  }
+
+  Participante.fromJson(Map json)
+      : participanteId = json['ParticipanteId'],
+        nome = json['Nome'],
+        urlFoto = json['UrlFoto'],
+        numero = json['Numero'],
+        idade = json['Idade'];
+
+
+  Map toJson(){
+    return {
+      'participanteId': participanteId,
+      'nome': nome,
+      'urlFoto': urlFoto,
+      'numero': numero,
+      'idade': idade
+    };
+  }
+
+
 }
 
 

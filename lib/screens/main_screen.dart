@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pente_rala_app/screens/chats.dart';
-import 'package:pente_rala_app/screens/friends.dart';
 import 'package:pente_rala_app/screens/home.dart';
 import 'package:pente_rala_app/screens/notifications.dart';
-import 'package:pente_rala_app/screens/profile.dart';
+import 'package:pente_rala_app/screens/pentes.dart';
 import 'package:pente_rala_app/widgets/icon_badge.dart';
 
 class MainScreen extends StatefulWidget {
@@ -25,7 +24,7 @@ class _MainScreenState extends State<MainScreen> {
         onPageChanged: onPageChanged,
         children: <Widget>[
           Chats(),
-          Friends(),
+          Pentes(),
           Home(),
           Notifications()
         ],
