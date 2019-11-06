@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pente_rala_app/screens/eventAdd.dart';
 import 'package:pente_rala_app/util/data.dart';
 import 'package:pente_rala_app/widgets/post_item.dart';
 import 'dart:convert';
@@ -71,7 +72,14 @@ class _HomeState extends State<Home> {
         child: Icon(
           Icons.add,
         ),
-        onPressed: (){},
+        onPressed: (){
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => EventAdd(
+              ))
+          );
+        },
+        mini: true,
       ),
     );
   }
