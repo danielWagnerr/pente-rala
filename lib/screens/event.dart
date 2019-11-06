@@ -89,7 +89,7 @@ class EventoRoute extends StatelessWidget {
                       onPressed: () async {
 
                         var deviceToken = await firebaseMessaging.getToken();
-
+                        print(deviceToken);
                         var resposta = await http.post("https://7ccaa60l36.exe"
                             "cute-api.us-east-1.amazonaws.com/teste/eventos/"
                             "${eventoId}/participar",
