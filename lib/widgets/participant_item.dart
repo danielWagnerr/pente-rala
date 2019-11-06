@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class ParticipantItem extends StatefulWidget {
   final String participanteId;
@@ -49,7 +51,17 @@ class _ParticipantItemState extends State<ParticipantItem> {
                   ),
                 ),
                 color: Theme.of(context).accentColor,
-                onPressed: (){},
+                onPressed: () async{
+                  var resposta = await http.post("https://ue6t8qmmsg.execute-api"
+                      ".us-east-1.amazonaws.com/teste/likes",
+                      headers: {
+                        'Content-Type': 'application/json'
+                      },
+                      body: jsonEncode({
+                        'ParticipanteId': '234',
+                        'ParticipanteDestinadoId': '787687'
+                      }));
+                },
               ),
             ),
           ],
