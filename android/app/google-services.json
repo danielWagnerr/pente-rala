@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "620186368204",
+    "firebase_url": "https://penterala-89c12.firebaseio.com",
+    "project_id": "penterala-89c12",
+    "storage_bucket": "penterala-89c12.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:620186368204:android:1d34f937e697d4df6eaa69",
+        "android_client_info": {
+          "package_name": "penteralaapp.pente_rala_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "620186368204-n0jrc1reake0l1ekjial68k2tvnuefa0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "penteralaapp.pente_rala_app",
+            "certificate_hash": "67ff3a355e00d70b0be64bb31a339fb3156abb37"
+          }
+        },
+        {
+          "client_id": "620186368204-jnvo6n11ku1e0v25tddj64oav8331f56.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCO73Kgf0tF0bSVohWbGFeYVdva8QdFuDo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "620186368204-jnvo6n11ku1e0v25tddj64oav8331f56.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

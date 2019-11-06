@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -46,6 +47,8 @@ class EventoRoute extends StatelessWidget {
         .format(new DateTime.fromMicrosecondsSinceEpoch(dataHoraFim))
         .toUpperCase();
 
+    FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
+
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -84,6 +87,9 @@ class EventoRoute extends StatelessWidget {
                           style: TextStyle(fontSize: 15),
                           ),
                       onPressed: () async {
+
+                        var deviceToken = await firebaseMessaging.getToken();
+
                         var resposta = await http.post("https://7ccaa60l36.exe"
                             "cute-api.us-east-1.amazonaws.com/teste/eventos/"
                             "${eventoId}/participar",
@@ -91,7 +97,8 @@ class EventoRoute extends StatelessWidget {
                                     'Content-Type': 'application/json'
                             },
                             body: jsonEncode({
-                                    'ParticipanteId': '234'
+                                    'ParticipanteId': '234',
+                                    'DeviceToken': deviceToken.toString()
                             }));
 
                         print(resposta.statusCode);
