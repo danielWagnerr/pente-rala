@@ -3,6 +3,7 @@ import 'package:pente_rala_app/screens/chats.dart';
 import 'package:pente_rala_app/screens/home.dart';
 import 'package:pente_rala_app/screens/notifications.dart';
 import 'package:pente_rala_app/screens/pentes.dart';
+import 'package:pente_rala_app/screens/swipe_feed_page.dart';
 import 'package:pente_rala_app/widgets/icon_badge.dart';
 
 class MainScreen extends StatefulWidget {
@@ -26,7 +27,8 @@ class _MainScreenState extends State<MainScreen> {
           Chats(),
           Pentes(),
           Home(),
-          Notifications()
+          Notifications(),
+          SwipeFeedPage(),
         ],
       ),
 
@@ -69,6 +71,13 @@ class _MainScreenState extends State<MainScreen> {
             BottomNavigationBarItem(
               icon: IconBadge(
                 icon: Icons.notifications,
+              ),
+              title: Container(height: 0.0),
+            ),
+
+            BottomNavigationBarItem(
+              icon: IconBadge(
+                icon: Icons.accessibility,
               ),
               title: Container(height: 0.0),
             )

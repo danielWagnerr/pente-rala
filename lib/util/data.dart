@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class API {
   static Future getEventos() {
@@ -14,6 +15,30 @@ class API {
         headers: {'Content-Type': 'application/json; charset=UTF-8'});
   }
   
+  static Future registraLike(String participanteId, String participanteDestinadoId) {
+    return http.post("https://ue6t8qmmsg.execute-api.us-east-1.amazonaws.com/teste/likes",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: jsonEncode({
+          'ParticipanteId': participanteId,
+          'ParticipanteDestinadoId': participanteDestinadoId
+        }));
+  }
+
+  static Future insereParticipanteEvento(String eventoId, String participanteId, String deviceToken) {
+    return http.post("https://7ccaa60l36.exe"
+        "cute-api.us-east-1.amazonaws.com/teste/eventos/"
+        "${eventoId}/participar",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: jsonEncode({
+          'ParticipanteId': '234',
+          'DeviceToken': deviceToken.toString()
+        }));
+
+  }
 }
 
 class Evento {
