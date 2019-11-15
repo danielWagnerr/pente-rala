@@ -8,36 +8,60 @@ class API {
         "https://7ccaa60l36.execute-api.us-east-1.amazonaws.com/teste/eventos",
         headers: {'Content-Type': 'application/json; charset=UTF-8'});
   }
-  
-  static Future getEventoEspecifico(String participanteId){
-    return http.get("https://7ccaa60l36.execute-api.us-east-1.amazonaws.com/"
+
+  static Future getEventoEspecifico(String participanteId) {
+    return http.get(
+        "https://7ccaa60l36.execute-api.us-east-1.amazonaws.com/"
         "teste/eventos/participante/${participanteId}",
         headers: {'Content-Type': 'application/json; charset=UTF-8'});
   }
-  
-  static Future registraLike(String participanteId, String participanteDestinadoId) {
-    return http.post("https://ue6t8qmmsg.execute-api.us-east-1.amazonaws.com/teste/likes",
-        headers: {
-          'Content-Type': 'application/json'
-        },
+
+  static Future registraLike(
+      String participanteId, String participanteDestinadoId) {
+    return http.post(
+        "https://ue6t8qmmsg.execute-api.us-east-1.amazonaws.com/teste/likes",
+        headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'ParticipanteId': participanteId,
           'ParticipanteDestinadoId': participanteDestinadoId
         }));
   }
 
-  static Future insereParticipanteEvento(String eventoId, String participanteId, String deviceToken) {
-    return http.post("https://7ccaa60l36.exe"
+  static Future cadastraParticipante(
+      String email,
+      String participanteId,
+      String nome,
+      int idade,
+      String genero,
+      String descricao,
+      String base64Image,
+      String deviceToken) {
+
+    return http.post(
+        "https://ge367evqcf.execute-api.us-east-1.amazonaws.com/teste",
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          "ParticipanteId": participanteId,
+          "Email": email,
+          "Nome": nome,
+          "idade": idade,
+          "genero": genero,
+          "Descricao": descricao,
+          "ImagemBase64": base64Image,
+          "DeviceToken": deviceToken
+        })
+    );
+  }
+
+  static Future insereParticipanteEvento(
+      String eventoId, String participanteId, String deviceToken) {
+    return http.post(
+        "https://7ccaa60l36.exe"
         "cute-api.us-east-1.amazonaws.com/teste/eventos/"
         "${eventoId}/participar",
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: jsonEncode({
-          'ParticipanteId': '234',
-          'DeviceToken': deviceToken.toString()
-        }));
-
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(
+            {'ParticipanteId': '234', 'DeviceToken': deviceToken.toString()}));
   }
 }
 
@@ -65,7 +89,7 @@ class Evento {
 
   Evento.fromJson(Map json)
       : eventoId = json['EventoId'],
-        dataHoraInicio =  json['DataHoraIncio'],
+        dataHoraInicio = json['DataHoraIncio'],
         dataHoraFim = json['DataHoraFim'],
         local = json['Local'],
         nome = json['Nome'],
@@ -73,7 +97,7 @@ class Evento {
         urlImagem = json['LinkImagem'],
         descricao = json['Descricao'];
 
-  Map toJson(){
+  Map toJson() {
     return {
       'eventoId': eventoId,
       'dataHoraInicio': dataHoraInicio.toString(),
@@ -87,9 +111,7 @@ class Evento {
   }
 }
 
-
 class Participante {
-
   String participanteId;
   String nome;
   String urlFoto;
@@ -97,7 +119,7 @@ class Participante {
   int idade;
 
   Participante(String participanteId, String nome, String urlFoto,
-      String numero, int idade){
+      String numero, int idade) {
     this.participanteId = participanteId;
     this.nome = nome;
     this.urlFoto = urlFoto;
@@ -112,8 +134,7 @@ class Participante {
         numero = json['Numero'],
         idade = json['Idade'];
 
-
-  Map toJson(){
+  Map toJson() {
     return {
       'participanteId': participanteId,
       'nome': nome,
@@ -122,12 +143,7 @@ class Participante {
       'idade': idade
     };
   }
-
-
 }
-
-
-
 
 Random random = Random();
 List names = [
@@ -172,52 +188,64 @@ List notifs = [
   "${names[random.nextInt(10)]} está testando"
 ];
 
-List notifications = List.generate(13, (index)=>{
-  "name": names[random.nextInt(10)],
-  "dp": "assets/cm${random.nextInt(10)}.jpeg",
-  "time": "${random.nextInt(50)} min atrás",
-  "notif": notifs[random.nextInt(10)]
-});
+List notifications = List.generate(
+    13,
+    (index) => {
+          "name": names[random.nextInt(10)],
+          "dp": "assets/cm${random.nextInt(10)}.jpeg",
+          "time": "${random.nextInt(50)} min atrás",
+          "notif": notifs[random.nextInt(10)]
+        });
 
-List posts = List.generate(13, (index)=>{
-    "name": names[random.nextInt(10)],
-    "dp": "assets/cm${random.nextInt(10)}.jpeg",
-    "time": "${random.nextInt(50)} min atrás",
-    "img": "assets/cm${random.nextInt(10)}.jpeg"
-});
+List posts = List.generate(
+    13,
+    (index) => {
+          "name": names[random.nextInt(10)],
+          "dp": "assets/cm${random.nextInt(10)}.jpeg",
+          "time": "${random.nextInt(50)} min atrás",
+          "img": "assets/cm${random.nextInt(10)}.jpeg"
+        });
 
-List chats = List.generate(13, (index)=>{
-  "name": names[random.nextInt(10)],
-  "dp": "assets/cm${random.nextInt(10)}.jpeg",
-  "msg": messages[random.nextInt(10)],
-  "counter": random.nextInt(20),
-  "time": "${random.nextInt(50)} min atrás",
-  "isOnline": random.nextBool(),
-});
+List chats = List.generate(
+    13,
+    (index) => {
+          "name": names[random.nextInt(10)],
+          "dp": "assets/cm${random.nextInt(10)}.jpeg",
+          "msg": messages[random.nextInt(10)],
+          "counter": random.nextInt(20),
+          "time": "${random.nextInt(50)} min atrás",
+          "isOnline": random.nextBool(),
+        });
 
-List groups = List.generate(13, (index)=>{
-  "name": "Teste ${random.nextInt(20)}",
-  "dp": "assets/cm${random.nextInt(10)}.jpeg",
-  "msg": messages[random.nextInt(10)],
-  "counter": random.nextInt(20),
-  "time": "${random.nextInt(50)} min ago",
-  "isOnline": random.nextBool(),
-});
+List groups = List.generate(
+    13,
+    (index) => {
+          "name": "Teste ${random.nextInt(20)}",
+          "dp": "assets/cm${random.nextInt(10)}.jpeg",
+          "msg": messages[random.nextInt(10)],
+          "counter": random.nextInt(20),
+          "time": "${random.nextInt(50)} min ago",
+          "isOnline": random.nextBool(),
+        });
 
 List types = ["text", "image"];
-List conversation = List.generate(10, (index)=>{
-  "username": "Teste ${random.nextInt(20)}",
-  "time": "${random.nextInt(50)} min atrás",
-  "type": types[random.nextInt(2)],
-  "replyText": messages[random.nextInt(10)],
-  "isMe": random.nextBool(),
-  "isGroup": false,
-  "isReply": random.nextBool(),
-});
+List conversation = List.generate(
+    10,
+    (index) => {
+          "username": "Teste ${random.nextInt(20)}",
+          "time": "${random.nextInt(50)} min atrás",
+          "type": types[random.nextInt(2)],
+          "replyText": messages[random.nextInt(10)],
+          "isMe": random.nextBool(),
+          "isGroup": false,
+          "isReply": random.nextBool(),
+        });
 
-List friends = List.generate(13, (index)=>{
-  "name": names[random.nextInt(10)],
-  "dp": "assets/cm${random.nextInt(10)}.jpeg",
-  "status": "Teste",
-  "isAccept": random.nextBool(),
-});
+List friends = List.generate(
+    13,
+    (index) => {
+          "name": names[random.nextInt(10)],
+          "dp": "assets/cm${random.nextInt(10)}.jpeg",
+          "status": "Teste",
+          "isAccept": random.nextBool(),
+        });

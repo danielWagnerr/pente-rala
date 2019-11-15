@@ -3,6 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pente_rala_app/screens/main_screen.dart';
+import 'package:pente_rala_app/screens/register_participant.dart';
 import 'package:pente_rala_app/util/const.dart';
 
 void main() async {
@@ -25,40 +26,32 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-
-    FirebaseAuth.instance.currentUser().then((FirebaseUser user) {
-      print(user.uid);
-    });
+    super.initState();
 
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: isDark ? Constants.darkPrimary : Constants.lightPrimary,
-      statusBarIconBrightness: isDark?Brightness.light:Brightness.dark,
+      statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
     ));
 
     firebaseMessaging.configure(
-      onLaunch: (Map<String, dynamic> msg){
+      onLaunch: (Map<String, dynamic> msg) {
         print("onLaunch called");
       },
-      onResume: (Map<String, dynamic> msg){
+      onResume: (Map<String, dynamic> msg) {
         print("onResume called");
       },
-      onMessage: (Map<String, dynamic> msg){
+      onMessage: (Map<String, dynamic> msg) {
         print("onMessage called");
       },
     );
     firebaseMessaging.requestNotificationPermissions(
-        const IosNotificationSettings(
-            sound: true,
-            alert: true,
-            badge: true
-        )
-    );
-    firebaseMessaging.onIosSettingsRegistered.listen((IosNotificationSettings setting){
+        const IosNotificationSettings(sound: true, alert: true, badge: true));
+    firebaseMessaging.onIosSettingsRegistered
+        .listen((IosNotificationSettings setting) {
       print('IOS Settings registered');
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +63,6 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -87,14 +79,15 @@ class _MyHomePageState extends State<MyHomePage> {
       this.verificationId = verifyId;
     };
 
-    final PhoneCodeSent smsCodeSent = (String verifyId, [int forceCodeResend]){
+    final PhoneCodeSent smsCodeSent = (String verifyId, [int forceCodeResend]) {
       this.verificationId = verifyId;
-      smsCodeDialog(context).then((value){
+      smsCodeDialog(context).then((value) {
         print("Autenticado!");
       });
     };
 
-    final PhoneVerificationCompleted verifiedSuccess = (AuthCredential credential){
+    final PhoneVerificationCompleted verifiedSuccess =
+        (AuthCredential credential) {
       print("Verificado");
     };
 
@@ -108,57 +101,53 @@ class _MyHomePageState extends State<MyHomePage> {
         verificationCompleted: verifiedSuccess,
         verificationFailed: verifiedFailed,
         codeSent: smsCodeSent,
-        codeAutoRetrievalTimeout: autoRetrieve
-    );
+        codeAutoRetrievalTimeout: autoRetrieve);
   }
 
   Future<bool> smsCodeDialog(BuildContext context) {
     return showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return new AlertDialog(
-          title: Text('Digite o código'),
-          content: TextField(
-            onChanged: (value) {
-              this.smsCode= value;
-            },
-          ),
-          contentPadding: EdgeInsets.all(10.0),
-          actions: <Widget>[
-            new FlatButton(
-              child: Text('Entrar'),
-              onPressed: () {
-                FirebaseAuth.instance.currentUser().then((user){
-                  if (user != null) {
-                    Navigator.of(context).pop();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => MainScreen()),
-                    );
-                  }
-                  else {
-                    Navigator.of(context).pop();
-                    signIn();
-                  }
-                });
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return new AlertDialog(
+            title: Text('Digite o código'),
+            content: TextField(
+              onChanged: (value) {
+                this.smsCode = value;
               },
-            )
-          ],
-        );
-      }
-    );
+            ),
+            contentPadding: EdgeInsets.all(10.0),
+            actions: <Widget>[
+              new FlatButton(
+                child: Text('Entrar'),
+                onPressed: () {
+                  FirebaseAuth.instance.currentUser().then((user) {
+                    if (user != null) {
+                      Navigator.of(context).pop();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => RegisterParticipant()),
+                      );
+                    } else {
+                      Navigator.of(context).pop();
+                      signIn();
+                    }
+                  });
+                },
+              )
+            ],
+          );
+        });
   }
 
   signIn() {
-    final AuthCredential credential = PhoneAuthProvider.getCredential(verificationId: verificationId, smsCode: smsCode);
+    final AuthCredential credential = PhoneAuthProvider.getCredential(
+        verificationId: verificationId, smsCode: smsCode);
 
     FirebaseAuth.instance.signInWithCredential(credential).then((user) {
       Navigator.push(
         context,
-        MaterialPageRoute(
-            builder: (context) => MainScreen()),
+        MaterialPageRoute(builder: (context) => RegisterParticipant()),
       );
     });
   }
@@ -194,7 +183,6 @@ class _MyHomePageState extends State<MyHomePage> {
       print('IOS Settings registered');
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
