@@ -16,9 +16,9 @@ class API {
         headers: {'Content-Type': 'application/json; charset=UTF-8'});
   }
 
-  static Future registraLike(
+  static void registraLike(
       String participanteId, String participanteDestinadoId) {
-    return http.post(
+    http.post(
         "https://ue6t8qmmsg.execute-api.us-east-1.amazonaws.com/teste/likes",
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
@@ -28,15 +28,14 @@ class API {
   }
 
   static Future cadastraParticipante(
-      String email,
       String participanteId,
+      String email,
       String nome,
       int idade,
       String genero,
       String descricao,
       String base64Image,
       String deviceToken) {
-
     return http.post(
         "https://ge367evqcf.execute-api.us-east-1.amazonaws.com/teste",
         headers: {'Content-Type': 'application/json'},
@@ -44,24 +43,22 @@ class API {
           "ParticipanteId": participanteId,
           "Email": email,
           "Nome": nome,
-          "idade": idade,
-          "genero": genero,
+          "Idade": idade,
+          "Genero": genero,
           "Descricao": descricao,
-          "ImagemBase64": base64Image,
+          "Base64Imagem": base64Image,
           "DeviceToken": deviceToken
-        })
-    );
+        }));
   }
 
   static Future insereParticipanteEvento(
-      String eventoId, String participanteId, String deviceToken) {
+      String eventoId, String participanteId) {
     return http.post(
         "https://7ccaa60l36.exe"
         "cute-api.us-east-1.amazonaws.com/teste/eventos/"
         "${eventoId}/participar",
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(
-            {'ParticipanteId': '234', 'DeviceToken': deviceToken.toString()}));
+        body: jsonEncode({'ParticipanteId': participanteId}));
   }
 }
 
@@ -113,34 +110,46 @@ class Evento {
 
 class Participante {
   String participanteId;
+  String email;
   String nome;
-  String urlFoto;
-  String numero;
   int idade;
+  String genero;
+  String descricao;
+  String deviceToken;
+  String urlFoto;
 
-  Participante(String participanteId, String nome, String urlFoto,
-      String numero, int idade) {
+  Participante(String participanteId, String email, String nome, int idade,
+      String genero, String descricao, String deviceToken, String urlFoto) {
     this.participanteId = participanteId;
+    this.email = email;
     this.nome = nome;
-    this.urlFoto = urlFoto;
-    this.numero = numero;
     this.idade = idade;
+    this.genero = genero;
+    this.descricao = descricao;
+    this.deviceToken = deviceToken;
+    this.urlFoto = urlFoto;
   }
 
   Participante.fromJson(Map json)
       : participanteId = json['ParticipanteId'],
+        email = json['Email'],
         nome = json['Nome'],
-        urlFoto = json['UrlFoto'],
-        numero = json['Numero'],
-        idade = json['Idade'];
+        idade = json['Idade'],
+        genero = json['Genero'],
+        descricao = json['Descricao'],
+        deviceToken = json['DeviceToken'],
+        urlFoto = json['UrlFoto'];
 
   Map toJson() {
     return {
       'participanteId': participanteId,
+      'email': email,
       'nome': nome,
-      'urlFoto': urlFoto,
-      'numero': numero,
-      'idade': idade
+      'idade': idade,
+      'genero': genero,
+      'descricao': descricao,
+      'deviceToken': deviceToken,
+      'urlFoto': urlFoto
     };
   }
 }

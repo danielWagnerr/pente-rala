@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pente_rala_app/screens/event.dart';
 
@@ -29,6 +30,20 @@ class PostItem extends StatefulWidget {
 }
 
 class _PostItemState extends State<PostItem> {
+  var participanteId;
+
+  void _retornaIdUsuario() async{
+    var user = await FirebaseAuth.instance.currentUser();
+    participanteId =  user.uid;
+  }
+
+  @override
+  void initState() {
+    _retornaIdUsuario();
+    super.initState();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -72,7 +87,8 @@ class _PostItemState extends State<PostItem> {
                 local: widget.local,
                 organizador: widget.organizador,
                 urlImagem: widget.urlImagem,
-                descricao: widget.descricao
+                descricao: widget.descricao,
+                participanteId: participanteId,
               ))
           );
         },

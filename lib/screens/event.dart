@@ -1,11 +1,11 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:pente_rala_app/util/data.dart';
-import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
 
 class EventoRoute extends StatelessWidget {
@@ -17,6 +17,7 @@ class EventoRoute extends StatelessWidget {
   final String organizador;
   final String urlImagem;
   final String descricao;
+  final String participanteId;
 
   EventoRoute(
       {Key key,
@@ -27,7 +28,8 @@ class EventoRoute extends StatelessWidget {
       @required this.nome,
       @required this.organizador,
       @required this.urlImagem,
-      @required this.descricao})
+      @required this.descricao,
+      @required this.participanteId})
       : super(key: key);
 
   @override
@@ -42,8 +44,6 @@ class EventoRoute extends StatelessWidget {
     String dataFim = DateFormat.MMMMEEEEd("pt_BR")
         .format(new DateTime.fromMicrosecondsSinceEpoch(dataHoraFim))
         .toUpperCase();
-
-    FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
 
     return Scaffold(
       appBar: AppBar(
@@ -81,10 +81,8 @@ class EventoRoute extends StatelessWidget {
                       style: TextStyle(fontSize: 15),
                     ),
                     onPressed: () async {
-                      var deviceToken = await firebaseMessaging.getToken();
-                      print(deviceToken);
                       var resposta = await API.insereParticipanteEvento(
-                          eventoId, "234", deviceToken.toString());
+                          eventoId, participanteId);
 
                       print(resposta.statusCode);
                       if (resposta.statusCode == 200) {

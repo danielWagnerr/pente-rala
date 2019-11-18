@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pente_rala_app/screens/home.dart';
 import 'package:pente_rala_app/screens/main_screen.dart';
 import 'package:pente_rala_app/screens/register_participant.dart';
 import 'package:pente_rala_app/util/const.dart';
@@ -20,13 +21,45 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool isDark = false;
+  var usuarioAutenticado;
 
   FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
+
+
+  Future _verificaUsuario() async {
+    var user = await FirebaseAuth.instance.currentUser();
+    return (user != null);
+  }
+
+  Widget futureBuilder(){
+    return FutureBuilder(
+      future: usuarioAutenticado,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.done:
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: Constants.appName,
+              theme: isDark ? Constants.darkTheme : Constants.lightTheme,
+              home: snapshot.data ? MainScreen() : MyHomePage(),
+            );
+          case ConnectionState.waiting:
+            return new Text('Carregando...');
+          default:
+            if (snapshot.hasError)
+              return new Text('Error: ${snapshot.error}');
+            else
+              return new Text('Result: ${snapshot.data}');
+        }
+      },
+    );
+  }
+
 
   @override
   void initState() {
     super.initState();
-    super.initState();
+    usuarioAutenticado = _verificaUsuario();
 
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -59,7 +92,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: Constants.appName,
       theme: isDark ? Constants.darkTheme : Constants.lightTheme,
-      home: MyHomePage(),
+      home: futureBuilder(),
     );
   }
 }

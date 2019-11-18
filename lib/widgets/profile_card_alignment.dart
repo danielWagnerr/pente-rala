@@ -4,8 +4,10 @@ class ProfileCardAlignment extends StatelessWidget
 {
   final int cardNum;
   final String imagem;
+  final String nome;
   final String descricao;
-  ProfileCardAlignment(this.cardNum, this.imagem, this.descricao);
+  final String participanteId;
+  ProfileCardAlignment(this.cardNum, this.participanteId, this.nome, this.descricao, this.imagem);
 
   @override
   Widget build(BuildContext context)
@@ -51,7 +53,7 @@ class ProfileCardAlignment extends StatelessWidget
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>
                 [
-                  new Text('Card number $cardNum', style: new TextStyle(color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.w700)),
+                  new Text(nome, style: new TextStyle(color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.w700)),
                   new Padding(padding: new EdgeInsets.only(bottom: 8.0)),
                   new Text(descricao, textAlign: TextAlign.start, style: new TextStyle(color: Colors.white)),
                 ],

@@ -25,10 +25,9 @@ class _MainScreenState extends State<MainScreen> {
         onPageChanged: onPageChanged,
         children: <Widget>[
           Chats(),
-          Pentes(),
+          SwipeFeedPage(),
           Home(),
           Notifications(),
-          SwipeFeedPage(),
         ],
       ),
 
@@ -71,13 +70,6 @@ class _MainScreenState extends State<MainScreen> {
             BottomNavigationBarItem(
               icon: IconBadge(
                 icon: Icons.notifications,
-              ),
-              title: Container(height: 0.0),
-            ),
-
-            BottomNavigationBarItem(
-              icon: IconBadge(
-                icon: Icons.accessibility,
               ),
               title: Container(height: 0.0),
             )

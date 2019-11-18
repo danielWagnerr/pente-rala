@@ -21,18 +21,14 @@ class _SwipeFeedPageState extends State<SwipeFeedPage>
         elevation: 0.0,
         centerTitle: true,
         backgroundColor: Colors.white,
-        leading: new IconButton
-        (
-          onPressed: () {},
-          icon: new Icon(Icons.settings, color: Colors.grey)
-        ),
+        leading: new Container(),
         title: Text("Seu evento"),
         actions: <Widget>
         [
           new IconButton
           (
             onPressed: () {},
-            icon: new Icon(Icons.question_answer, color: Colors.grey)
+            icon: new Icon(Icons.settings, color: Colors.grey)
           ),
         ],
       ),
@@ -50,6 +46,7 @@ class _SwipeFeedPageState extends State<SwipeFeedPage>
 
   Widget buttonsRow()
   {
+    return new Container();
     return new Container
     (
       margin: new EdgeInsets.symmetric(vertical: 48.0),

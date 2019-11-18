@@ -6,8 +6,10 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:pente_rala_app/screens/main_screen.dart';
 import 'package:pente_rala_app/util/data.dart';
 import 'package:wc_form_validators/wc_form_validators.dart';
 
@@ -56,7 +58,7 @@ class _RegisterParticipantState extends State<RegisterParticipant> {
     var user = await FirebaseAuth.instance.currentUser();
     var deviceToken = await new FirebaseMessaging().getToken();
 
-    API.cadastraParticipante(
+    var resposta = await API.cadastraParticipante(
         user.uid,
         this.email,
         this.nome,
@@ -65,6 +67,21 @@ class _RegisterParticipantState extends State<RegisterParticipant> {
         descricao,
         base64Image,
         deviceToken);
+
+    if (resposta.statusCode == 200)
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => MainScreen()),
+      );
+
+    else
+      Fluttertoast.showToast(
+          msg: "Tivemos problemas ao realizar o cadastro",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIos: 2,
+          textColor: Colors.white,
+          fontSize: 16.0);
   }
 
   @override

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pente_rala_app/util/data.dart';
 import 'profile_card_alignment.dart';
@@ -28,6 +29,7 @@ class CardsSectionAlignment extends StatefulWidget {
 class _CardsSectionState extends State<CardsSectionAlignment>
     with SingleTickerProviderStateMixin {
   int cardsCounter = 0;
+  var userUid;
 
   List<ProfileCardAlignment> cards = new List();
   AnimationController _controller;
@@ -35,28 +37,33 @@ class _CardsSectionState extends State<CardsSectionAlignment>
   final Alignment defaultFrontCardAlign = new Alignment(0.0, 0.0);
   Alignment frontCardAlign;
   double frontCardRot = 0.0;
-
+  var participantesList;
   Future _getEvento() async {
-    var resposta = await API.getEventoEspecifico("234");
+    var user = await FirebaseAuth.instance.currentUser();
+    userUid = user.uid;
+
+    var resposta = await API.getEventoEspecifico(userUid.toString());
 
     var respostaJson = jsonDecode(resposta.body);
 
     var evento = respostaJson;
 
     Iterable list = evento['Participantes'];
-    var participantes =
+    participantesList =
         list.map((model) => Participante.fromJson(model)).toList();
 
-    participantes.forEach((participante) {
-      cards.add(new ProfileCardAlignment(cardsCounter, participante.urlFoto,
-          "ESSE É O CARTAO " + participante.nome));
+    participantesList.forEach((participante) {
+      if (participante.participanteId != userUid.toString()) {
+        cards.add(new ProfileCardAlignment(
+            cardsCounter,
+            participante.participanteId,
+            participante.nome,
+            participante.urlFoto,
+            participante.descricao));
+      }
     });
-    cards.add(new ProfileCardAlignment(
-        cardsCounter,
-        "https://fotos-eventos-app.s3.amazonaws.com/58debcbe-81c5-47cc-9f0b-1f3852e35348.jpg?AWSAccessKeyId=ASIA3JA65PGXIFTSBPJD&Signature=abCG%2FcsdTKZEkKPV55647AbrFsg%3D&x-amz-security-token=IQoJb3JpZ2luX2VjEPr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMSJIMEYCIQCrcQ59JO1CWyiu7yRgUOIbm05zgjwb1GXR%2BMFy0QS%2FeAIhAOpCHHJZMlszUZz%2BZzIdZD8KXAylRVn%2BtTwJawa7NZtJKtgBCCIQABoMNzc1MzA2NDQzMTgyIgxk9nKP5zrSoStAy0kqtQGZhtaNXQwrhXtW6Cs1ect7HfeSK5W2wUE1Bs%2B49nzb5nANAGQbt8oDySaiWmq%2FNHqXOWPQzVYzSc6Y7hAv0qeckxjuPj%2F2dPHu0YF2CIZM4WV1bIJ0A34rFDfrY5Mhbpd318p0mMz17ZLCXkYsD5ggQS2uckWf7jG70BbZPHdAR8%2Bjq1XD1fOq3x3%2FNBOv5zAWdaEmKxmYQrZU5n8zOX1AwPoBK4lmXtehu8w388EIn2yc8BCIMLuwre4FOt8BFPer%2BxtJnQ57HSOOx%2FTZCKQj5NaY8o26w5sgivbihsy46fRsBR3ESXCkXgeg1s5Q%2BwsUDMSPdR4whWQNYGFNBiwZ8vCYRYEX3zB5foThpWrPe7sz9TW%2FB9KouUB3Tp84UswKAk0CYv775wXMmllll2juCsGwZ1KnSVhF0BfW9pxINTe4w4USMS1qaAAuIhnulFRR%2FFnWC6Zzj021cl9hQPdm29OBPWpWzJkdXUR804zMT%2F9aSZGHxSKwCqdTydJAzgSBMdjXBfyYxIN4Rg6rVOkZToJA0UyYnNSRr60irg%3D%3D&Expires=1573612934",
-        "ESSE É O CARTAO terceiro"));
 
-    return participantes;
+    return participantesList;
   }
 
   Future _participantes;
@@ -100,6 +107,9 @@ class _CardsSectionState extends State<CardsSectionAlignment>
   }
 
   Widget cartoes() {
+    if (participantesList.length < 3)
+      return new Text("Quantidade de participantes não foi atingida!");
+
     return new Expanded(
         child: Stack(
       children: <Widget>[
@@ -131,13 +141,7 @@ class _CardsSectionState extends State<CardsSectionAlignment>
                 // When releasing the first card
                 onPanEnd: (_) {
                   if (frontCardAlign.x > 3.0) {
-                    //API.registraLike("PEGA O ID DO PARTICIPANTE LOGADO",
-                    //    "PEGA O ID DO CARTAO, QUE NO CASO É O PARTICIPANTE DESEJADO ex: cards[0].participanteId");
-
-                    print("DIREITA");
-                  }
-                  if (frontCardAlign.x < -3.0) {
-                    print("ESQUERDA");
+                    API.registraLike(userUid, cards[0].participanteId);
                   }
 
                   // If the front card was swiped far enough to count as swiped
