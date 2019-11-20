@@ -360,7 +360,7 @@ class _MainScreenState extends State<MainScreen> {
                       style: TextStyle(fontSize: 15),
                     ),
                     onPressed: () async {
-                      var resposta = await API.enviarMensagem(participanteId, mensagem, mensagem2);
+                      var resposta = await API.enviarMensagem(myId, participanteId, mensagem, mensagem2);
 
                       if (resposta.statusCode == 200) {
                         inputVisivel = false;

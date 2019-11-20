@@ -86,9 +86,15 @@ class API {
 
   static Future enviarMensagem(String myId, String participanteDestinadoId, String mensagem1, String mensagem2) {
     return http.post(
-        "LINK Q VOU CRIAR",
+        "https://ge367evqcf.execute-api.us-east-1.amazonaws.com/teste/mensagem",
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({"ParticipanteId": participanteId}));
+        body: jsonEncode({
+          "ParticipanteId": myId,
+          "ParticipanteDestinadoId": participanteDestinadoId,
+          "mensagem1": mensagem1,
+          "mensagem2": mensagem2
+        })
+    );
   }
 }
 
