@@ -35,7 +35,6 @@ class _RegisterParticipantState extends State<RegisterParticipant> {
   List<Genero> _generos = Genero.getGeneros();
   List<DropdownMenuItem<Genero>> _dropdownMenuItems;
   Genero _generoSelecionado;
-  String _foto = "";
 
   File file;
   String base64Image;
@@ -48,40 +47,62 @@ class _RegisterParticipantState extends State<RegisterParticipant> {
 
   void _choose() async {
     file = await ImagePicker.pickImage(source: ImageSource.gallery);
-
     this.base64Image = base64Encode(file.readAsBytesSync());
+
+    Fluttertoast.showToast(
+        msg: "Foto escolhida!",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 3,
+        textColor: Colors.white,
+        fontSize: 16.0);
   }
 
   void _upload() async {
-    if (file == null) return;
+    if (this._formKey.currentState.validate()) {
+      _formKey.currentState.save();
 
-    var user = await FirebaseAuth.instance.currentUser();
-    var deviceToken = await new FirebaseMessaging().getToken();
+      if (file == null) {
+        Fluttertoast.showToast(
+            msg: "Escolha uma foto para realizar o cadastro!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIos: 3,
+            textColor: Colors.white,
+            fontSize: 16.0);
 
-    var resposta = await API.cadastraParticipante(
-        user.uid,
-        this.email,
-        this.nome,
-        this.idade.toUtc().millisecondsSinceEpoch,
-        genero,
-        descricao,
-        base64Image,
-        deviceToken);
+        return;
+      };
 
-    if (resposta.statusCode == 200)
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => MainScreen()),
-      );
+      var user = await FirebaseAuth.instance.currentUser();
+      var deviceToken = await new FirebaseMessaging().getToken();
 
-    else
-      Fluttertoast.showToast(
-          msg: "Tivemos problemas ao realizar o cadastro",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIos: 2,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      var resposta = await API.cadastraParticipante(
+          user.uid,
+          this.email,
+          this.nome,
+          (this.idade.toLocal().microsecondsSinceEpoch/1000000).toInt(),
+          genero,
+          descricao,
+          base64Image,
+          deviceToken);
+
+      if (resposta.statusCode == 200)
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MainScreen()),
+        );
+
+      else
+        Fluttertoast.showToast(
+            msg: "Tivemos problemas ao realizar o cadastro",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIos: 2,
+            textColor: Colors.white,
+            fontSize: 16.0);
+
+    }
   }
 
   @override
@@ -134,22 +155,22 @@ class _RegisterParticipantState extends State<RegisterParticipant> {
                     Validators.required("E-mail é obrigatório"),
                     Validators.email("E-mail inválido")
                   ]),
-                  onChanged: (value) {
+                  onSaved: (value) {
                     this.email = value;
                   }),
               TextFormField(
                   decoration:
                       InputDecoration(hintText: "Nome", labelText: "Nome"),
-                  validator: Validators.required('Nome é obrigatório'),
-                  onChanged: (value) {
+                  validator: Validators.required('Nome é obrigatório!'),
+                  onSaved: (value) {
                     this.nome = value;
                   }),
               TextFormField(
                   decoration: InputDecoration(
                       hintText: "Conte um pouco sobre você",
                       labelText: "Descrição"),
-                  validator: Validators.required('Nome é obrigatório'),
-                  onChanged: (value) {
+                  validator: Validators.required('Descrição é obrigatório!'),
+                  onSaved: (value) {
                     this.descricao = value;
                   }),
               DateTimeField(
@@ -164,7 +185,8 @@ class _RegisterParticipantState extends State<RegisterParticipant> {
                       initialDate: currentValue ?? DateTime.now(),
                       lastDate: DateTime(2100));
                 },
-                onChanged: (value) {
+                validator: (date) => date == null ? 'Data é obrigatório!' : null,
+                onSaved: (value) {
                   this.idade = value;
                 },
               ),
@@ -179,8 +201,8 @@ class _RegisterParticipantState extends State<RegisterParticipant> {
                   obscureText: true,
                   decoration:
                       InputDecoration(hintText: "Senha", labelText: "Senha"),
-                  validator: Validators.required('Senha é obrigatória'),
-                  onChanged: (value) {
+                  validator: Validators.required('Senha é obrigatório!'),
+                  onSaved: (value) {
                     this.senha = value;
                   }),
               Container(
@@ -192,16 +214,10 @@ class _RegisterParticipantState extends State<RegisterParticipant> {
                   ),
                   onPressed: () => setState(() {
                     _choose();
-                    _foto =
-                        "Foto Selecionada, caso mude de idéia, apenas selecione outra!";
                   }),
                   color: Colors.blue,
                 ),
                 margin: EdgeInsets.only(top: 20.0),
-              ),
-              Text(
-                _foto,
-                style: TextStyle(fontWeight: FontWeight.w400),
               ),
               Container(
                 width: screenSize.width,

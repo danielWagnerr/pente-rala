@@ -48,6 +48,7 @@ class _HomeState extends State<Home> {
             onPressed: (){},
           ),
         ],
+        leading: Container(),
       ),
 
       body: ListView.builder(

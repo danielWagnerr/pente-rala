@@ -23,7 +23,8 @@ class API {
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'ParticipanteId': participanteId,
-          'ParticipanteDestinadoId': participanteDestinadoId
+          'ParticipanteDestinadoId': participanteDestinadoId,
+          'DataHora': (new DateTime.now().microsecondsSinceEpoch/1000000).toInt()
         }));
   }
 
@@ -51,6 +52,28 @@ class API {
         }));
   }
 
+  static Future cadastrarEvento(
+      String nome,
+      String organizador,
+      int dataHoraInicio,
+      int dataHoraFim,
+      String local,
+      String descricao,
+      String base64Image) {
+    return http.post(
+        "https://7ccaa60l36.execute-api.us-east-1.amazonaws.com/teste/eventos",
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          "Nome": nome,
+          "Organizador": organizador,
+          "DataHoraInicio": dataHoraInicio,
+          "DataHoraFim": dataHoraFim,
+          "Local": local,
+          "Descricao": descricao,
+          "Base64Imagem": base64Image
+        }));
+  }
+
   static Future insereParticipanteEvento(
       String eventoId, String participanteId) {
     return http.post(
@@ -58,7 +81,14 @@ class API {
         "cute-api.us-east-1.amazonaws.com/teste/eventos/"
         "${eventoId}/participar",
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'ParticipanteId': participanteId}));
+        body: jsonEncode({"ParticipanteId": participanteId}));
+  }
+
+  static Future enviarMensagem(String myId, String participanteDestinadoId, String mensagem1, String mensagem2) {
+    return http.post(
+        "LINK Q VOU CRIAR",
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({"ParticipanteId": participanteId}));
   }
 }
 

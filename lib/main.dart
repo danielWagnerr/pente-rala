@@ -2,9 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pente_rala_app/screens/home.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pente_rala_app/screens/main_screen.dart';
 import 'package:pente_rala_app/screens/register_participant.dart';
+import 'package:pente_rala_app/screens/swipe_feed_page.dart';
 import 'package:pente_rala_app/util/const.dart';
 
 void main() async {
@@ -22,9 +23,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   bool isDark = false;
   var usuarioAutenticado;
-
-  FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
-
 
   Future _verificaUsuario() async {
     var user = await FirebaseAuth.instance.currentUser();
@@ -66,24 +64,6 @@ class _MyAppState extends State<MyApp> {
       statusBarColor: isDark ? Constants.darkPrimary : Constants.lightPrimary,
       statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
     ));
-
-    firebaseMessaging.configure(
-      onLaunch: (Map<String, dynamic> msg) {
-        print("onLaunch called");
-      },
-      onResume: (Map<String, dynamic> msg) {
-        print("onResume called");
-      },
-      onMessage: (Map<String, dynamic> msg) {
-        print("onMessage called");
-      },
-    );
-    firebaseMessaging.requestNotificationPermissions(
-        const IosNotificationSettings(sound: true, alert: true, badge: true));
-    firebaseMessaging.onIosSettingsRegistered
-        .listen((IosNotificationSettings setting) {
-      print('IOS Settings registered');
-    });
   }
 
   @override

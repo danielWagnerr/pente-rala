@@ -58,8 +58,8 @@ class _CardsSectionState extends State<CardsSectionAlignment>
             cardsCounter,
             participante.participanteId,
             participante.nome,
-            participante.urlFoto,
-            participante.descricao));
+            participante.descricao,
+            participante.urlFoto));
       }
     });
 
@@ -107,7 +107,7 @@ class _CardsSectionState extends State<CardsSectionAlignment>
   }
 
   Widget cartoes() {
-    if (participantesList.length < 3)
+    if (participantesList.length < 4)
       return new Text("Quantidade de participantes não foi atingida!");
 
     return new Expanded(

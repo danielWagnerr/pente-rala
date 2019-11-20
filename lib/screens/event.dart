@@ -36,14 +36,13 @@ class EventoRoute extends StatelessWidget {
   Widget build(BuildContext context) {
     initializeDateFormatting("pt_BR", null);
     String dataInicio = DateFormat.MMMMEEEEd("pt_BR")
-        .format(new DateTime.fromMicrosecondsSinceEpoch(dataHoraInicio));
+        .format(new DateTime.fromMillisecondsSinceEpoch(dataHoraInicio * 1000))
+        .toUpperCase();
 
     String horaInicio = DateFormat.Hms("pt_BR")
-        .format(new DateTime.fromMicrosecondsSinceEpoch(dataHoraInicio));
-
-    String dataFim = DateFormat.MMMMEEEEd("pt_BR")
-        .format(new DateTime.fromMicrosecondsSinceEpoch(dataHoraFim))
+        .format(new DateTime.fromMillisecondsSinceEpoch(dataHoraInicio * 1000))
         .toUpperCase();
+
 
     return Scaffold(
       appBar: AppBar(
@@ -151,7 +150,7 @@ class EventoRoute extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Icon(Icons.home, size: 14, color: Colors.grey),
-                  Text(" Rua Ana Paula 117, Bairro Santa Cruz",
+                  Text(local,
                       style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w300,
@@ -163,7 +162,7 @@ class EventoRoute extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Icon(Icons.access_time, size: 14, color: Colors.grey),
-                  Text(" " + dataFim.toString() + " - " + horaInicio,
+                  Text(" " + dataInicio.toString() + " - " + horaInicio,
                       style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w300,
