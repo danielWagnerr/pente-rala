@@ -17,21 +17,16 @@ class MainScreen extends StatefulWidget {
   _MainScreenState createState() => _MainScreenState();
 }
 
-class Match extends StatefulWidget {
-  @override
-  _MatchState createState() => _MatchState();
-}
-
-class _MatchState extends State<Match> {
-  @override
-  Widget build(BuildContext context) {}
-}
-
 class _MainScreenState extends State<MainScreen> {
   PageController _pageController;
   int _page = 2;
   FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
   String myId;
+
+  String mensagem;
+  Widget primeiraMsg = Container();
+  Widget segundaMsg = Container();
+  bool inputVisivel = true;
 
   @override
   Widget build(BuildContext context) {
@@ -136,6 +131,9 @@ class _MainScreenState extends State<MainScreen> {
       var mensagem1 = msg['data']['mensagem1'];
       var mensagem2 = msg['data']['mensagem2'];
 
+      print("Mesagem1: " + mensagem1);
+      print("Mensagem2: " + mensagem2);
+
       match(participanteId, nome, urlFoto, mensagem1, mensagem2);
     });
   }
@@ -154,7 +152,7 @@ class _MainScreenState extends State<MainScreen> {
             builder: (context) => StatefulBuilder(
               builder: (context, setState) {
                 return AlertDialog(
-                  title: new Text("Você deu uma pentada!"),
+                  title: new Text("Você deu uma pentada com $nome!"),
                   content: new SingleChildScrollView(
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -223,6 +221,7 @@ class _MainScreenState extends State<MainScreen> {
                               child: Text(mensagem, textAlign: TextAlign.right),
                             );
                           });
+                          Navigator.of(context).pop();
                         }
                         else {
                           Fluttertoast.showToast(
@@ -247,7 +246,7 @@ class _MainScreenState extends State<MainScreen> {
             builder: (context) => StatefulBuilder(
               builder: (context, setState) {
                 return AlertDialog(
-                  title: new Text("Você deu uma pentada!"),
+                  title: new Text("Você deu uma pentada com $nome!"),
                   content: new SingleChildScrollView(
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -314,7 +313,7 @@ class _MainScreenState extends State<MainScreen> {
           builder: (context) => StatefulBuilder(
             builder: (context, setState) {
               return AlertDialog(
-                title: new Text("Você deu uma pentada!"),
+                title: new Text("Você deu uma pentada com $nome!"),
                 content: new SingleChildScrollView(
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -330,6 +329,7 @@ class _MainScreenState extends State<MainScreen> {
                         primeiraMsg,
                         SizedBox(height: 20),
                         segundaMsg,
+                        SizedBox(height: 20),
                         Visibility(
                             visible: inputVisivel,
                             child: TextField(
@@ -375,6 +375,7 @@ class _MainScreenState extends State<MainScreen> {
                             child: Text(mensagem, textAlign: TextAlign.right),
                           );
                         });
+                        Navigator.of(context).pop();
                       }
                       else {
                         Fluttertoast.showToast(
