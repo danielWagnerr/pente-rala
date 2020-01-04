@@ -12,7 +12,7 @@ class API {
   static Future getEventoEspecifico(String participanteId) {
     return http.get(
         "https://7ccaa60l36.execute-api.us-east-1.amazonaws.com/"
-        "teste/eventos/participante/${participanteId}",
+        "teste/eventos/participante/$participanteId",
         headers: {'Content-Type': 'application/json; charset=UTF-8'});
   }
 
@@ -24,7 +24,7 @@ class API {
         body: jsonEncode({
           'ParticipanteId': participanteId,
           'ParticipanteDestinadoId': participanteDestinadoId,
-          'DataHora': (new DateTime.now().microsecondsSinceEpoch/1000000).toInt()
+          'DataHora': new DateTime.now().microsecondsSinceEpoch~/1000000
         }));
   }
 
@@ -79,7 +79,7 @@ class API {
     return http.post(
         "https://7ccaa60l36.exe"
         "cute-api.us-east-1.amazonaws.com/teste/eventos/"
-        "${eventoId}/participar",
+        "$eventoId/participar",
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({"ParticipanteId": participanteId}));
   }

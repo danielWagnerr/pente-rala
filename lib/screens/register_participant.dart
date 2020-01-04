@@ -72,7 +72,7 @@ class _RegisterParticipantState extends State<RegisterParticipant> {
             fontSize: 16.0);
 
         return;
-      };
+      }
 
       var user = await FirebaseAuth.instance.currentUser();
       var deviceToken = await new FirebaseMessaging().getToken();
@@ -81,7 +81,7 @@ class _RegisterParticipantState extends State<RegisterParticipant> {
           user.uid,
           this.email,
           this.nome,
-          (this.idade.toLocal().microsecondsSinceEpoch/1000000).toInt(),
+          this.idade.toLocal().microsecondsSinceEpoch~/1000000,
           genero,
           descricao,
           base64Image,

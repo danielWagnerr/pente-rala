@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:bubble/bubble.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -159,7 +157,7 @@ class _MainScreenState extends State<MainScreen> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           Image.network(
-                            "${urlFoto}",
+                            urlFoto,
                             height: 170,
                             width: MediaQuery.of(context).size.width,
                             fit: BoxFit.cover,
@@ -253,7 +251,7 @@ class _MainScreenState extends State<MainScreen> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           Image.network(
-                            "${urlFoto}",
+                            urlFoto,
                             height: 170,
                             width: MediaQuery.of(context).size.width,
                             fit: BoxFit.cover,
@@ -320,7 +318,7 @@ class _MainScreenState extends State<MainScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Image.network(
-                          "${urlFoto}",
+                          urlFoto,
                           height: 170,
                           width: MediaQuery.of(context).size.width,
                           fit: BoxFit.cover,

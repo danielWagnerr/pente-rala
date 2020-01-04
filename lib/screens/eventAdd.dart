@@ -55,14 +55,14 @@ class _EventAddState extends State<EventAdd> {
             textColor: Colors.white,
             fontSize: 16.0);
         return;
-      };
+      }
 
 
       var resposta = await API.cadastrarEvento(
           this.nomeEvento,
           this.organizadorEvento,
-          (this.dataInicio.toLocal().microsecondsSinceEpoch/1000000).toInt(),
-          (this.dataFim.toLocal().microsecondsSinceEpoch/1000000).toInt(),
+          this.dataInicio.toLocal().microsecondsSinceEpoch~/1000000,
+          this.dataFim.toLocal().microsecondsSinceEpoch~/1000000,
           this.localEvento,
           this.descricaoEvento,
           this.base64Image

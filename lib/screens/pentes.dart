@@ -52,6 +52,7 @@ class _PentesState extends State<Pentes> {
               participanteId: participantes[index].participanteId,
               nome: participantes[index].nome,
               urlFoto: participantes[index].urlFoto,
+              numero: "31973073890",
               idade: participantes[index].idade,
           );
         },
